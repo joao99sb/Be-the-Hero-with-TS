@@ -1,27 +1,21 @@
 import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { OngsService } from '../ong.service';
 import Ong from '../entities/Ong';
-import OngInput from './input/ong.input';
-
-import LogonInput from './input/logon.input';
-import { hash } from 'bcryptjs';
-import { randomBytes } from 'crypto';
+import { OngInput } from './input/ong.input';
+import { LogonInput } from './input/logon.input';
 import { UseGuards } from '@nestjs/common';
-
-import { LocalStrategy } from '../services/auth/local.strategy';
 import { ILogonReturn } from './dtos/ILogonReturnDTO';
-import { AuthService } from '../services/auth/auth.service';
-import Session from '../entities/Session';
+import { Session } from '../entities/Session';
 import { AuthGuard } from '../services/auth/auth.guard';
+import { CreateOngService } from '../services/createOng/createOng.service';
+import { LogonService } from '../services/logon/logon.service';
 
 @Resolver(() => Ong)
 class OngResolver {
   constructor(
     private readonly repoService: OngsService,
-
-    private readonly localStrategyService: LocalStrategy,
-
-    private readonly authService: AuthService,
+    private readonly createOngService: CreateOngService,
+    private readonly logonService: LogonService,
   ) {}
 
   @Query(() => [Ong])
@@ -44,44 +38,14 @@ class OngResolver {
 
   @Mutation(() => Ong)
   public async createOng(@Args('data') intput: OngInput): Promise<Ong> {
-    const ongChecking = await this.repoService.ongRepo.findOne({
-      where: { email: intput.email },
-    });
-
-    if (ongChecking) {
-      throw new Error('Email in use');
-    }
-    const hashedPassword = await hash(intput.password, 10);
-    const ongId = randomBytes(4).toString('hex');
-
-    const ong = this.repoService.ongRepo.create({
-      id: ongId,
-      email: intput.email,
-      name: intput.name,
-      password: hashedPassword,
-      whatsapp: intput.whatsapp,
-      uf: intput.uf,
-      city: intput.city,
-    });
-    await this.repoService.ongRepo.save(ong);
+    const ong = await this.createOngService.execute(intput);
     return ong;
   }
 
   @Query(() => Session)
   public async logon(@Args('data') input: LogonInput): Promise<ILogonReturn> {
-    const ong = await this.localStrategyService.validate(
-      input.email,
-      input.password,
-    );
-
-    if (!ong) {
-      throw new Error("ong doen't exist");
-    }
-    const { access_token } = await this.authService.login(ong.id);
-    return {
-      ong: ong,
-      token: access_token,
-    };
+    const ongAndToken = await this.logonService.execute(input);
+    return ongAndToken;
   }
 
   @Query(() => Ong)

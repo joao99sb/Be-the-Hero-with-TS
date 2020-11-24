@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
-export default class OngInput {
+export class OngInput {
   @Field()
   readonly name: string;
 
