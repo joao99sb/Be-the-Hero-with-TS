@@ -8,8 +8,9 @@ import { OngsModule } from './modules/ongs/ong.module';
 import { IncidentssModule } from './modules/incidents/incidents.module';
 import { OngResolver } from './modules/ongs/resolvers/ong.resolver';
 import * as ormOptions from './config/orm';
+import { Incidentsresolver } from './modules/incidents/resolvers/incidents.resolver';
 
-const graphQLImports = [OngResolver];
+const graphQLImports = [OngResolver, Incidentsresolver];
 const repoModules = [OngsModule, IncidentssModule];
 
 @Module({

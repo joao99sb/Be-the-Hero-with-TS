@@ -17,17 +17,24 @@ export default class Incident {
 
   @Field()
   @Column()
-  name: string;
+  title: string;
 
   @Field()
   @Column()
-  password: string;
+  description: string;
 
   @Field()
   @Column()
-  email: string;
+  value: string;
 
-  @ManyToOne(() => Ong, (ongs) => ongs.incidentsConnection)
-  @JoinColumn({ name: 'ongs_id' })
-  ongs: Ong;
+  @Field()
+  @Column({ name: 'ong_id' })
+  ongId: string;
+
+  @Field(() => Ong)
+  ong: Ong;
+
+  @ManyToOne(() => Ong, (ongs) => ongs.incidentsConnection, { primary: true })
+  @JoinColumn({ name: 'ong_id' })
+  ongsConnection: Promise<Ong>;
 }

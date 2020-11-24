@@ -20,6 +20,7 @@ export class AuthGuard implements CanActivate {
     ctx.user = await this.validateToken(ctx.headers.authorization);
     return true;
   }
+
   public async validateToken(auth: string) {
     if (auth.split(' ')[0] !== 'Bearer') {
       throw new HttpException('invalid token', HttpStatus.UNAUTHORIZED);

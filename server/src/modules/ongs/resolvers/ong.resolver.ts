@@ -1,14 +1,25 @@
-import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ResolveField,
+  Parent,
+  Context,
+} from '@nestjs/graphql';
 import { OngsService } from '../ong.service';
 import Ong from '../entities/Ong';
 import { OngInput } from './input/ong.input';
 import { LogonInput } from './input/logon.input';
 import { UseGuards } from '@nestjs/common';
 import { ILogonReturn } from './dtos/ILogonReturnDTO';
-import { Session } from '../entities/Session';
+import { Session } from './input/Session';
 import { AuthGuard } from '../services/auth/auth.guard';
 import { CreateOngService } from '../services/createOng/createOng.service';
 import { LogonService } from '../services/logon/logon.service';
+import Incident from 'src/modules/incidents/entities/Incident';
+import { getRepository } from 'typeorm';
+import Incidents from '../../incidents/entities/Incident';
 
 @Resolver(() => Ong)
 export class OngResolver {
@@ -64,5 +75,16 @@ export class OngResolver {
     await this.repoService.ongRepo.remove(ong);
 
     return ong;
+  }
+  @ResolveField(() => [Incident], { name: 'incident' })
+  public async getAllIncidentsFromOng(
+    @Parent() parent: Ong,
+    @Context() { IncidentLoader }: typeof IncidentLoader,
+  ): Promise<Incident[]> {
+    return await getRepository(Incidents).find({
+      where: {
+        ongId: parent.id,
+      },
+    });
   }
 }

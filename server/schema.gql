@@ -2,6 +2,15 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Incident {
+  id: Int!
+  title: String!
+  description: String!
+  value: String!
+  ongId: String!
+  ong: Ong!
+}
+
 type Ong {
   id: String!
   name: String!
@@ -10,6 +19,7 @@ type Ong {
   whatsapp: String!
   city: String!
   uf: String!
+  incident: [Incident!]!
 }
 
 type Session {
@@ -22,6 +32,8 @@ type Query {
   getOng(email: String!): Ong!
   logon(data: LogonInput!): Session!
   me: Ong!
+  getAllMessagesFromOng: [Incident!]!
+  admGetAllIncidents: [Incident!]!
 }
 
 input LogonInput {
@@ -32,6 +44,8 @@ input LogonInput {
 type Mutation {
   createOng(data: OngInput!): Ong!
   deleteOng(id: Float!): Ong!
+  createIncidents(data: IncidentsInput!): Incident!
+  deleteIncidents(id: Float!): Incident!
 }
 
 input OngInput {
@@ -41,4 +55,10 @@ input OngInput {
   whatsapp: String!
   city: String!
   uf: String!
+}
+
+input IncidentsInput {
+  title: String!
+  description: String!
+  value: String!
 }

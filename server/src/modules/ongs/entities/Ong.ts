@@ -1,12 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, OneToMany, PrimaryColumn } from 'typeorm';
 import { ObjectType, Field } from '@nestjs/graphql';
 import Incident from '../../incidents/entities/Incident';
 
 @ObjectType()
 @Entity({ name: 'ongs' })
 export default class Ong {
+  @PrimaryColumn()
   @Field()
-  @PrimaryGeneratedColumn()
   id: string;
 
   @Field()
@@ -33,6 +33,6 @@ export default class Ong {
   @Column()
   uf: string;
 
-  @OneToMany(() => Incident, (incidents) => incidents.ongs)
-  incidentsConnection: Incident[];
+  @OneToMany(() => Incident, (incidents) => incidents.ongsConnection)
+  incidentsConnection: Promise<Incident[]>;
 }
