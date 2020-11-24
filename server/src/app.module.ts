@@ -5,11 +5,12 @@ import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 
 import { OngsModule } from './modules/ongs/ong.module';
-import OngResolver from './modules/ongs/resolvers/ong.resolver';
+import { IncidentssModule } from './modules/incidents/incidents.module';
+import { OngResolver } from './modules/ongs/resolvers/ong.resolver';
 import * as ormOptions from './config/orm';
 
 const graphQLImports = [OngResolver];
-const repoModules = [OngsModule];
+const repoModules = [OngsModule, IncidentssModule];
 
 @Module({
   imports: [

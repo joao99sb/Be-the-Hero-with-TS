@@ -11,7 +11,7 @@ import { CreateOngService } from '../services/createOng/createOng.service';
 import { LogonService } from '../services/logon/logon.service';
 
 @Resolver(() => Ong)
-class OngResolver {
+export class OngResolver {
   constructor(
     private readonly repoService: OngsService,
     private readonly createOngService: CreateOngService,
@@ -66,4 +66,3 @@ class OngResolver {
     return ong;
   }
 }
-export default OngResolver;
