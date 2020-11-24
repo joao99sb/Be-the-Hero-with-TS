@@ -1,0 +1,44 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Ong {
+  id: String!
+  name: String!
+  password: String!
+  email: String!
+  whatsapp: String!
+  city: String!
+  uf: String!
+}
+
+type Session {
+  ong: Ong!
+  token: String!
+}
+
+type Query {
+  getAllOngs: [Ong!]!
+  getOng(email: String!): Ong!
+  logon(data: LogonInput!): Session!
+  me: Ong!
+}
+
+input LogonInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  createOng(data: OngInput!): Ong!
+  deleteOng(id: Float!): Ong!
+}
+
+input OngInput {
+  name: String!
+  email: String!
+  password: String!
+  whatsapp: String!
+  city: String!
+  uf: String!
+}
