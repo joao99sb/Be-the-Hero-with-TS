@@ -25,6 +25,9 @@ const repoModules = [OngsModule, IncidentssModule];
       autoSchemaFile: 'schema.gql',
       playground: true,
       context: ({ req }) => ({ headers: req.headers }),
+      cors: {
+        origin: true,
+      },
     }),
   ],
 

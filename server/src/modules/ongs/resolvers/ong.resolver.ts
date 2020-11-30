@@ -53,7 +53,7 @@ export class OngResolver {
     return ong;
   }
 
-  @Query(() => Session)
+  @Mutation(() => Session)
   public async logon(@Args('data') input: LogonInput): Promise<ILogonReturn> {
     const ongAndToken = await this.logonService.execute(input);
     return ongAndToken;

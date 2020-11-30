@@ -30,19 +30,14 @@ type Session {
 type Query {
   getAllOngs: [Ong!]!
   getOng(email: String!): Ong!
-  logon(data: LogonInput!): Session!
   me: Ong!
   getAllMessagesFromOng: [Incident!]!
   admGetAllIncidents: [Incident!]!
 }
 
-input LogonInput {
-  email: String!
-  password: String!
-}
-
 type Mutation {
   createOng(data: OngInput!): Ong!
+  logon(data: LogonInput!): Session!
   deleteOng(id: Float!): Ong!
   createIncidents(data: IncidentsInput!): Incident!
   deleteIncidents(id: Float!): Incident!
@@ -55,6 +50,11 @@ input OngInput {
   whatsapp: String!
   city: String!
   uf: String!
+}
+
+input LogonInput {
+  email: String!
+  password: String!
 }
 
 input IncidentsInput {
